@@ -6,7 +6,8 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "normalize.css": "^8.0.1",
+    "autoprefixer": "^9.7.4",
+    "postcss-cli": "^7.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router": "^5.1.2",
@@ -15,9 +16,9 @@
     "winston": "^3.2.1"
   },
   "scripts": {
-    "start": "npm run tailwind:css && react-scripts start",
-    "tailwind:css": "tailwind build src/tailwind.css -c tailwind.config.js -o src/index.css",
-    "build": "npm run tailwind:css && react-scripts build",
+    "start": "npm run postcss:build && react-scripts start",
+    "postcss:build": "postcss src/styles/custom-tailwind.css -o src/styles/tailwind.css",
+    "build": "npm run postcss:build && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -35,5 +36,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.1.0"
   }
 }
