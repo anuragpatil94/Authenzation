@@ -606,6 +606,10 @@ video {
   }
 }
 
+body {
+  background-color: #f7fafc;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
