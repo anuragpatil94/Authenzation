@@ -2,7 +2,12 @@ import React from "react";
 
 class Login extends React.Component {
   render() {
-    return <></>;
+    return (
+      <div>
+        <form>
+        </form>
+      </div>
+    );
   }
 }
 
