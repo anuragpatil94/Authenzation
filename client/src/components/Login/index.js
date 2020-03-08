@@ -8,7 +8,7 @@ class Login extends React.Component {
         <div className="flex w-1/3">
           <div className="flex w-full">
             <div>{/* Different Auth Options */}</div>
-            <div className="w-full md:max-w-sm rounded-lg">
+            <div className="w-full rounded-lg">
               <LoginForm></LoginForm>
             </div>
           </div>

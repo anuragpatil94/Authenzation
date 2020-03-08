@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class SignUpForm extends Component {
   render() {
@@ -45,13 +46,21 @@ export default class SignUpForm extends Component {
           ></input>
           {/* <p>Please choose a password</p> */}
         </div>
-        <div className="flex items-center justify-center">
+        <div className="mb-4 flex items-center justify-center">
           <button
             className="bg-blue-500 w-full md:w-1/2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
           >
             Sign Up
           </button>
+        </div>
+        <div className="text-center">
+          <Link
+            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+            to="/"
+          >
+            Already Signed Up?
+          </Link>
         </div>
       </form>
     );
