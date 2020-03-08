@@ -1,12 +1,14 @@
 import React from "react";
-import Login from "./Login";
+import { Header, Main, Footer } from "containers";
 
 export default class App extends React.Component {
   render() {
     return (
-      <>
-        <Login></Login>
-      </>
+      <div className="flex flex-col items-center min-h-screen">
+        <Header></Header>
+        <Main></Main>
+        <Footer></Footer>
+      </div>
     );
   }
 }
