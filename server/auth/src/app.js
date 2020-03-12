@@ -9,7 +9,7 @@ import config from "./config";
   const app = express();
 
   let middleware = await import("./middleware");
-  middleware.default(app);
+  middleware.default({ app });
 
   app.listen(port, err => {
     // TODO: Handle Error
