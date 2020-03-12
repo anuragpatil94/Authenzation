@@ -1,17 +1,25 @@
 import bodyParser, { json } from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
-import winston from "winston";
 
-export default expressApp => {
+import { APICallsLogger } from "./logger";
+
+export default ({ app }) => {
+  // status routes
+  // TODO: Status Route
+  app.get("/status", (req, res) => {
+    res.status(200).end();
+  });
+
   // CORS Management
-  expressApp.use(cors);
+  app.use(cors);
 
   // Load body parsers
-  expressApp.use(bodyParser.urlencoded({ extended: false }));
-  expressApp.use(json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(json());
+
+  app.use(morgan("combined", { stream: APICallsLogger.stream }));
 
   // TODO: Connect to Routes
-
   //   Error Handling Routes
 };
