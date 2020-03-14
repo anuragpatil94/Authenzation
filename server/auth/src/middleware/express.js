@@ -3,9 +3,8 @@ import cors from "cors";
 
 export default ({ app }) => {
   // status routes
-  // TODO: Status Route
   app.get("/status", (req, res) => {
-    res.status(200).end();
+    res.status(200).send({ message: "The server is running!" });
   });
 
   // CORS Management

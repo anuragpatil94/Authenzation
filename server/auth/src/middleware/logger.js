@@ -33,15 +33,14 @@ export default ({ app }) => {
         userAgent: tokens["user-agent"](req, res)
       });
     },
-    { stream: Logger.stream }
+    { stream: RequestLogger.stream }
   );
 
   app.use(myMorgan);
 };
 
 // Load Loggers
-
-const Logger = winston.createLogger({
+const RequestLogger = winston.createLogger({
   // Format for all transports
   format: format.combine(
     format.timestamp({
@@ -49,48 +48,71 @@ const Logger = winston.createLogger({
     })
   ),
   transports: [
-    new winston.transports.Console(
-      // Here is basically says that transport to console only if the log is of level="info"
-      {
-        format: format.combine(
-          format.printf(requestInfo => {
-            const message = JSON.parse(requestInfo.message);
-            const {
-              referrer,
-              remoteAddr,
-              remoteUser,
-              httpVersion,
-              userAgent,
-              ...args
-            } = message;
+    new winston.transports.Console({
+      // Here is basically says that transport to console only if the log is of level<="info"
+      level: "info",
+      format: format.combine(
+        format.json(),
+        format.printf(requestInfo => {
+          const message = JSON.parse(requestInfo.message);
+          const {
+            referrer,
+            remoteAddr,
+            remoteUser,
+            httpVersion,
+            userAgent,
+            id,
+            date,
+            ...args
+          } = message;
+          requestInfo.message = args;
 
-            requestInfo.message = args;
-
-            return `${requestInfo.level}: ${JSON.stringify(
-              requestInfo,
-              undefined,
-              4
-            )}`;
-          }),
-          format.label({ label: "REQUEST" }),
-          format.colorize({
-            message: true,
-            colors: {
-              all: "yellow"
-            }
-          })
-        ),
-
-        level: "info"
-      }
-    )
+          return `${requestInfo.level}: ${JSON.stringify(
+            requestInfo,
+            undefined,
+            4
+          )}`;
+        }),
+        format.colorize({
+          all: true,
+          colors: {
+            info: "blue"
+          }
+        })
+      )
+    })
   ]
 });
 
-Logger.stream = {
+RequestLogger.stream = {
   write: function(message) {
-    Logger.info(message);
+    RequestLogger.info(message);
   }
 };
+
+winston.loggers.add("LOGGER", {
+  transports: [
+    new winston.transports.Console({
+      level: "debug",
+      format: winston.format.combine(
+        winston.format.colorize({
+          colors: {
+            info: "blue",
+            error: "red",
+            warning: "yellow",
+            debug: "magenta"
+          },
+          all: true
+        }),
+        winston.format.json(),
+        winston.format.printf(info => {
+          return `${info.level} - ${info.message}`;
+        })
+      )
+    })
+  ]
+});
+
+const Logger = winston.loggers.get("LOGGER");
 
 export { Logger };

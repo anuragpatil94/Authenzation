@@ -1,5 +1,5 @@
 import loadExpress from "./express";
-import loadLoggers from "./logger";
+import loadLoggers, { Logger } from "./logger";
 import loadRoutes from "./routes";
 export default async ({ app }) => {
   // Load Database
@@ -10,6 +10,9 @@ export default async ({ app }) => {
 
   // Load Express
   loadExpress({ app });
+  Logger.debug("Loaded Initial Middlewares");
   loadLoggers({ app });
+  Logger.debug("Loaded Request Logger");
   loadRoutes({ app });
+  Logger.debug("Loaded Routes");
 };

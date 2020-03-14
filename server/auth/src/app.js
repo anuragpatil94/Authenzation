@@ -1,6 +1,7 @@
 import express from "express";
 
 import config from "./config";
+import { Logger } from "./middleware/logger";
 
 (async () => {
   let port = config.PORT;
@@ -12,8 +13,11 @@ import config from "./config";
   middleware.default({ app });
 
   app.listen(port, err => {
-    // TODO: Handle Error
-    // TODO: Add Logger
+    if (err) {
+      Logger.error(err);
+      process.exit(1);
+      return;
+    }
     console.log(`Server started at http://localhost:${port}`);
   });
 })();
