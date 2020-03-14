@@ -17,52 +17,67 @@ export default ({ app }) => {
   /**
    * Custom morgan log -> stream to winston
    */
-  const morganLogger = morgan(
+  const myMorgan = morgan(
     (tokens, req, res) => {
-      return [
-        tokens.id(req, res),
-        tokens.method(req, res),
-        tokens.url(req, res),
-        tokens.status(req, res),
-        tokens.date(req, res),
-        tokens.referrer(req, res),
-        tokens["response-time"](req, res),
-        tokens["remote-addr"](req, res),
-        tokens["remote-user"](req, res),
-        tokens["http-version"](req, res),
-        tokens["user-agent"](req, res)
-      ].join(" | ");
+      return JSON.stringify({
+        id: tokens.id(req, res),
+        method: tokens.method(req, res),
+        url: tokens.url(req, res),
+        status: tokens.status(req, res),
+        date: tokens.date(req, res),
+        referrer: tokens.referrer(req, res),
+        responseTime: tokens["response-time"](req, res),
+        remoteAddr: tokens["remote-addr"](req, res),
+        remoteUser: tokens["remote-user"](req, res),
+        httpVersion: tokens["http-version"](req, res),
+        userAgent: tokens["user-agent"](req, res)
+      });
     },
-    { stream: RequestLogger.stream }
+    { stream: Logger.stream }
   );
 
-  app.use(morganLogger);
+  app.use(myMorgan);
 };
 
 // Load Loggers
 
-const RequestLogger = winston.createLogger({
+const Logger = winston.createLogger({
   // Format for all transports
   format: format.combine(
     format.timestamp({
       format: "YYYY-MM-DD HH:mm:ss"
-    }),
-    format.printf(info => {
-      const { level, ...args } = info;
-      return `${level}: ${JSON.stringify(args, undefined, 4)}`;
     })
   ),
   transports: [
     new winston.transports.Console(
-      // Here is basically says that transport to console only if the log is of level="given"
+      // Here is basically says that transport to console only if the log is of level="info"
       {
         format: format.combine(
+          format.printf(requestInfo => {
+            const message = JSON.parse(requestInfo.message);
+            const {
+              referrer,
+              remoteAddr,
+              remoteUser,
+              httpVersion,
+              userAgent,
+              ...args
+            } = message;
+
+            requestInfo.message = args;
+
+            return `${requestInfo.level}: ${JSON.stringify(
+              requestInfo,
+              undefined,
+              4
+            )}`;
+          }),
           format.label({ label: "REQUEST" }),
           format.colorize({
+            message: true,
             colors: {
-              info: "yellow"
-            },
-            all: true
+              all: "yellow"
+            }
           })
         ),
 
@@ -72,10 +87,10 @@ const RequestLogger = winston.createLogger({
   ]
 });
 
-RequestLogger.stream = {
+Logger.stream = {
   write: function(message) {
-    RequestLogger.info(message);
+    Logger.info(message);
   }
 };
 
-export { RequestLogger };
+export { Logger };
