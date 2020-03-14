@@ -1,10 +1,20 @@
 import dotenv from "dotenv";
+
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
+
 let config = dotenv.config();
 
 if (!config) {
-  console.log("Configurations Not Found");
+  throw new Error("Configurations Not Found");
 }
 
 export default {
-  PORT: parseInt(process.env.PORT)
+  port: parseInt(process.env.NODE_SERVER_PORT) || 4000,
+  loggerConfig: {
+    logLevel: process.env.LOG_LEVEL || "silly",
+    infoColor: process.env.INFO_COLOR || "blue",
+    debugColor: process.env.DEBUG_COLOR || "magenta",
+    warningColor: process.env.WARNING_COLOR || "yellow",
+    errorColor: process.env.ERROR_COLOR || "red"
+  }
 };

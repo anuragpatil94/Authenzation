@@ -2,6 +2,8 @@ import morgan from "morgan";
 import winston, { format } from "winston";
 import { v4 as uuidv4 } from "uuid";
 
+import config from "./../config";
+
 export default ({ app }) => {
   // Adding id for each log
   morgan.token("id", req => req.id);
@@ -38,6 +40,8 @@ export default ({ app }) => {
 
   app.use(myMorgan);
 };
+
+// TODO: Add a condition for development server to show logs on console else only in database.
 
 // Load Loggers
 const RequestLogger = winston.createLogger({
@@ -93,14 +97,14 @@ RequestLogger.stream = {
 winston.loggers.add("LOGGER", {
   transports: [
     new winston.transports.Console({
-      level: "debug",
+      level: config.loggerConfig.logLevel,
       format: winston.format.combine(
         winston.format.colorize({
           colors: {
-            info: "blue",
-            error: "red",
-            warning: "yellow",
-            debug: "magenta"
+            info: config.loggerConfig.infoColor,
+            error: config.loggerConfig.errorColor,
+            warning: config.loggerConfig.warningColor,
+            debug: config.loggerConfig.debugColor
           },
           all: true
         }),

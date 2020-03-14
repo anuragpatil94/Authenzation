@@ -4,7 +4,7 @@ import config from "./config";
 import { Logger } from "./middleware/logger";
 
 (async () => {
-  let port = config.PORT;
+  let port = config.port;
 
   // Initiate express app
   const app = express();
