@@ -1,8 +1,5 @@
 import bodyParser, { json } from "body-parser";
 import cors from "cors";
-import morgan from "morgan";
-
-import { APICallsLogger } from "./logger";
 
 export default ({ app }) => {
   // status routes
@@ -12,14 +9,9 @@ export default ({ app }) => {
   });
 
   // CORS Management
-  app.use(cors);
+  app.use(cors());
 
   // Load body parsers
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(json());
-
-  app.use(morgan("combined", { stream: APICallsLogger.stream }));
-
-  // TODO: Connect to Routes
-  //   Error Handling Routes
 };
