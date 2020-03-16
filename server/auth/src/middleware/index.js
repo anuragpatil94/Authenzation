@@ -1,8 +1,13 @@
 import loadExpress from "./express";
 import loadLoggers, { Logger } from "./logger";
 import loadRoutes from "./routes";
+import mongoConnection from "./database";
 export default async ({ app }) => {
   // Load Database
+  const db = await mongoConnection();
+  if (db) {
+    Logger.debug("Loaded And Connected Database!");
+  }
   //   Load Model
 
   // TODO: Add Logger
@@ -10,7 +15,7 @@ export default async ({ app }) => {
 
   // Load Express
   loadExpress({ app });
-  Logger.debug("Loaded Initial Middlewares");
+  Logger.debug("Loaded Express Initial Middlewares");
   loadLoggers({ app });
   Logger.debug("Loaded Request Logger");
   loadRoutes({ app });

@@ -1,4 +1,5 @@
 import express from "express";
+import colors from "colors";
 
 import config from "./config";
 import { Logger } from "./middleware/logger";
@@ -10,7 +11,7 @@ import { Logger } from "./middleware/logger";
   const app = express();
 
   let middleware = await import("./middleware");
-  middleware.default({ app });
+  await middleware.default({ app });
 
   app.listen(port, err => {
     if (err) {

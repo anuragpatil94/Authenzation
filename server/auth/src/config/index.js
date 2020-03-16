@@ -19,5 +19,11 @@ export default {
   },
   routesConfig: {
     routePrefix: process.env.ROUTE_PREFIX || "/api/v1"
+  },
+  databaseConfig: {
+    mongoURI: process.env.MONGO_URI,
+    mongoUser: process.env.MONGO_USERNAME,
+    mongoPassword: process.env.MONGO_PASSWORD,
+    mongoDbName: process.env.MONGO_DATABASE_NAME
   }
 };
