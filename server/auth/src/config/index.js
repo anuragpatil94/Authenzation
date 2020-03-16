@@ -16,5 +16,8 @@ export default {
     debugColor: process.env.DEBUG_COLOR || "magenta",
     warningColor: process.env.WARNING_COLOR || "yellow",
     errorColor: process.env.ERROR_COLOR || "red"
+  },
+  routesConfig: {
+    routePrefix: process.env.ROUTE_PREFIX || "/api/v1"
   }
 };
