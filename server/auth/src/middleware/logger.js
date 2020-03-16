@@ -1,8 +1,8 @@
 import morgan from "morgan";
 import winston, { format } from "winston";
 import { v4 as uuidv4 } from "uuid";
-
 import config from "../config";
+import { constants } from "../util";
 
 export default ({ app }) => {
   // Adding id for each log
@@ -99,18 +99,32 @@ winston.loggers.add("LOGGER", {
     new winston.transports.Console({
       level: config.loggerConfig.logLevel,
       format: winston.format.combine(
-        winston.format.colorize({
-          colors: {
-            info: config.loggerConfig.infoColor,
-            error: config.loggerConfig.errorColor,
-            warning: config.loggerConfig.warningColor,
-            debug: config.loggerConfig.debugColor
-          },
-          all: true
-        }),
         winston.format.json(),
-        winston.format.printf(info => {
-          return `${info.level} - ${info.message}`;
+        winston.format.printf(log => {
+          const { level, ...rest } = log;
+          switch (level) {
+            case constants.LOGTYPE.INFO:
+              return `${level} - ${JSON.stringify(rest, undefined, 4)}`[
+                config.loggerConfig.infoColor
+              ];
+            case constants.LOGTYPE.ERROR:
+              return `${level} - ${JSON.stringify(rest, undefined, 4)}`[
+                config.loggerConfig.errorColor
+              ];
+            case constants.LOGTYPE.WARNING:
+              return `${level} - ${JSON.stringify(rest, undefined, 4)}`[
+                config.loggerConfig.warningColor
+              ];
+            case constants.LOGTYPE.DEBUG:
+              return `${level} - ${rest.message}`[
+                config.loggerConfig.debugColor
+              ];
+
+            default:
+              return `${level} - ${
+                JSON.stringify(rest, undefined, 4).bgYellow
+              }`;
+          }
         })
       )
     })
@@ -118,5 +132,6 @@ winston.loggers.add("LOGGER", {
 });
 
 const Logger = winston.loggers.get("LOGGER");
+Logger.debug("Loaded Logger");
 
 export { Logger };
