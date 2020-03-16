@@ -2,7 +2,7 @@ import morgan from "morgan";
 import winston, { format } from "winston";
 import { v4 as uuidv4 } from "uuid";
 
-import config from "./../config";
+import config from "../config";
 
 export default ({ app }) => {
   // Adding id for each log
