@@ -104,21 +104,21 @@ winston.loggers.add("LOGGER", {
           const { level, ...rest } = log;
           switch (level) {
             case constants.LOGTYPE.INFO:
-              return `${level} - ${JSON.stringify(rest, undefined, 4)}`[
-                config.loggerConfig.infoColor
-              ];
+              return `${level[config.loggerConfig.infoColor]} - ${
+                rest.message
+              }`;
             case constants.LOGTYPE.ERROR:
-              return `${level} - ${JSON.stringify(rest, undefined, 4)}`[
+              return `${level} - ${rest.message}`[
                 config.loggerConfig.errorColor
               ];
             case constants.LOGTYPE.WARNING:
-              return `${level} - ${JSON.stringify(rest, undefined, 4)}`[
-                config.loggerConfig.warningColor
-              ];
+              return `${level[config.loggerConfig.warningColor]} - ${
+                rest.message
+              }`;
             case constants.LOGTYPE.DEBUG:
-              return `${level} - ${rest.message}`[
-                config.loggerConfig.debugColor
-              ];
+              return `${level[config.loggerConfig.debugColor]} - ${
+                rest.message
+              }`;
 
             default:
               return `${level} - ${
@@ -132,6 +132,6 @@ winston.loggers.add("LOGGER", {
 });
 
 const Logger = winston.loggers.get("LOGGER");
-Logger.debug("Loaded Logger");
+Logger.info("Loaded Logger");
 
 export { Logger };

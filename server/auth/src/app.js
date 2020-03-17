@@ -5,6 +5,10 @@ import config from "./config";
 import { Logger } from "./middleware/logger";
 
 (async () => {
+  if (process.env.NODE_ENV == "development") {
+    Logger.info("App running on Development Environment");
+  }
+
   let port = config.port;
 
   // Initiate express app
