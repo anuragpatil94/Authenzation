@@ -1,5 +1,5 @@
 import configs from "../config";
-import routes from "../routes";
+import routes from "../api/routes";
 
 export default ({ app }) => {
   app.use(configs.routesConfig.routePrefix, routes());
