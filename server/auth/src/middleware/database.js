@@ -8,7 +8,6 @@ const usersSchema = {
   $jsonSchema: {
     bsonType: "object",
     required: [
-      "id",
       "details",
       "username",
       "password",
@@ -45,7 +44,7 @@ const usersSchema = {
       },
       password: {
         bsonType: "string",
-        description: "BCrypted Password with Salt"
+        description: "Bcrypted Password with Salt"
       },
       salt: {
         bsonType: "string",
