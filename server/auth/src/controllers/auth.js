@@ -1,15 +1,50 @@
-import { userServices } from "../services";
+import { userServices, authServices } from "../services";
+import { Logger } from "../middleware/logger";
+import { ErrorHandler, BadRequestError } from "../util";
 
 export const signup = async (req, res, next) => {
   try {
-    await userServices.createUser(req.body.data);
-    res.status(200).json({ message: "This is Signup Route" });
+    // Get data from the request
+    // TODO Change this to single data object
+    const { username, password, ...details } = req.body.data;
+
+    // Check if user exist
+    // TODO: change the variable name
+    const isUsernameAvailable = await authServices.isUsernameAvailable(
+      username
+    );
+
+    // Handle duplicate user exception
+    if (!isUsernameAvailable) {
+      const message = "Username already exist!";
+      Logger.warn(message);
+      throw new ErrorHandler(400, message);
+    }
+
+    // TODO: Validate request data
+    // TODO: Create middleware for common validations later.
+
+    // Create new User
+    const createdUserId = await userServices.createUser(
+      username,
+      password,
+      details
+    );
+
+    // Check if UserId is Created.
+    if (!createdUserId) {
+      throw new Error("User not created!");
+    }
+
+    res.status(200).json({
+      _id: createdUserId
+    });
   } catch (err) {
-    res.status(400).json({ code: err.code, message: err.message });
+    next(err);
   }
 };
 export const signin = async (req, res, next) => {
-  const authType = req.body.authType;
+  const authType = req.headers.authType;
   const reqUsername = req.body.data.username;
   const reqPassword = req.body.data.password;
 
