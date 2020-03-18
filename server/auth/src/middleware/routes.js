@@ -1,11 +1,14 @@
 import configs from "../config";
 import routes from "../api/routes";
+import { Logger } from "./logger";
 
 export default ({ app }) => {
   app.use(configs.routesConfig.routePrefix, routes());
 
   // catch 404 and forward to error handler
   app.use((req, res, next) => {
+    Logger.debug("Error MiddleWare: Route Not Found");
+
     const err = new Error("Not Found");
     err["status"] = 404;
     next(err);
@@ -16,6 +19,7 @@ export default ({ app }) => {
      * Handle 401 thrown by jwt
      */
     if (err.name === "UnauthorizedError") {
+      Logger.debug("Error MiddleWare: Unauthorized Error");
       return res
         .status(err.status)
         .send({ message: err.message })
@@ -25,7 +29,8 @@ export default ({ app }) => {
   });
 
   app.use((err, req, res, next) => {
-    res.sendStatus(err.status || 500).json({
+    Logger.debug(`Error MiddleWare: ${err.status}:  ${err.message}`);
+    res.status(err.status || 500).json({
       errors: {
         message: err.message
       }
