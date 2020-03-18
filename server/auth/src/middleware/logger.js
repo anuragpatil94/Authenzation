@@ -58,6 +58,7 @@ const RequestLogger = winston.createLogger({
       format: format.combine(
         format.json(),
         format.printf(requestInfo => {
+          // TODO: Use Colors Library. Add colors based on status code.
           const message = JSON.parse(requestInfo.message);
           const {
             referrer,
@@ -102,6 +103,9 @@ winston.loggers.add("LOGGER", {
         winston.format.json(),
         winston.format.printf(log => {
           const { level, ...rest } = log;
+
+          // TODO: Handle if the data sent is an object
+
           switch (level) {
             case constants.LOGTYPE.INFO:
               return `${level[config.loggerConfig.infoColor]} - ${
