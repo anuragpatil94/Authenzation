@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { AuthController } from "../../controllers";
+import { APIControllers } from "..";
 
 const route = Router();
 
 export default app => {
   app.use("/auth", route);
 
-  route.post("/signup", AuthController.signup);
+  route.post("/signup", APIControllers.AuthController.signup);
 
-  route.post("/signin", AuthController.signin);
+  route.post("/signin", APIControllers.AuthController.signin);
 
-  route.post("/logout", AuthController.logout);
+  route.post("/logout", APIControllers.AuthController.logout);
 };

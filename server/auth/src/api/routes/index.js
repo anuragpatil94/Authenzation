@@ -1,7 +1,7 @@
 import { Router } from "express";
 import auth from "./auth";
 
-export default () => {
+export const Routes = () => {
   const app = Router();
 
   /**

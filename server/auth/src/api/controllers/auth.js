@@ -1,6 +1,6 @@
-import { userServices, authServices } from "../services";
-import { Logger } from "../middleware/logger";
-import { ErrorHandler, BadRequestError } from "../util";
+import { userServices, authServices } from "../../services";
+import { Logger } from "../../middleware/logger";
+import { ErrorHandler, BadRequestError } from "../../util";
 
 export const signup = async (req, res, next) => {
   try {
