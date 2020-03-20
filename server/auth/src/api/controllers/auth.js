@@ -5,11 +5,11 @@ import { ErrorHandler, BadRequestError } from "../../util";
 export const signup = async (req, res, next) => {
   try {
     // Get data from the request
-    // TODO Change this to single data object
-    const { username, password, ...details } = req.body.data;
+    // FIXME Change this to single data object
+    const { username, password, ...details } = req.body;
 
     // Check if user exist
-    // TODO: change the variable name
+    // FIXME: change the variable name
     const isUsernameAvailable = await authServices.isUsernameAvailable(
       username
     );
@@ -20,9 +20,6 @@ export const signup = async (req, res, next) => {
       Logger.warn(message);
       throw new ErrorHandler(400, message);
     }
-
-    // TODO: Validate request data
-    // TODO: Create middleware for common validations later.
 
     // Create new User
     const createdUserId = await userServices.createUser(
