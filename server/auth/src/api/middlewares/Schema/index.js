@@ -1,4 +1,5 @@
 import Joi from "@hapi/joi";
+import { constants } from "../../../util";
 
 const SignUpSchema = Joi.object({
   firstName: Joi.string()
@@ -22,5 +23,5 @@ const SignUpSchema = Joi.object({
 });
 
 export default {
-  "/signup": SignUpSchema
+  [constants.ROUTES.AUTH.SIGNUP]: SignUpSchema
 };

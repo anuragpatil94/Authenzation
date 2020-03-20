@@ -8,5 +8,6 @@ Content-Type: {{ContentType}}
     "username":"test1",
     "password":"test123",
     "confirmPassword": "test123",
-    "lastName":"1"
+    "firstName":"Test",
+    "lastName":"One"
 }

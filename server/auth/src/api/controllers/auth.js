@@ -1,17 +1,15 @@
 import { userServices, authServices } from "../../services";
 import { Logger } from "../../middleware/logger";
-import { ErrorHandler, BadRequestError } from "../../util";
+import { ErrorHandler } from "../../util";
 
 export const signup = async (req, res, next) => {
   try {
     // Get data from the request
-    // FIXME Change this to single data object
-    const { username, password, ...details } = req.body;
+    const requestData = req.body;
 
     // Check if user exist
-    // FIXME: change the variable name
     const isUsernameAvailable = await authServices.isUsernameAvailable(
-      username
+      requestData.username
     );
 
     // Handle duplicate user exception
@@ -22,11 +20,7 @@ export const signup = async (req, res, next) => {
     }
 
     // Create new User
-    const createdUserId = await userServices.createUser(
-      username,
-      password,
-      details
-    );
+    const createdUserId = await userServices.createUser(requestData);
 
     // Check if UserId is Created.
     if (!createdUserId) {

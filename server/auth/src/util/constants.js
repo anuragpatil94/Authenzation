@@ -5,3 +5,22 @@ export const LOGTYPE = {
   DEBUG: "debug"
 };
 export const APPNAME = "AUTH_API";
+
+export const ROUTES = {
+  AUTH: {
+    SELF: "/auth",
+    SIGNUP: "/signup",
+    SIGNIN: "/signin"
+  }
+};
+
+export const COLLECTION = {
+  USERS: "users"
+};
+
+export const USER = {
+  USERLEVEL: {
+    GENERAL: "general",
+    ADMIN: "admin"
+  }
+};

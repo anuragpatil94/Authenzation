@@ -1,16 +1,22 @@
 import { Router } from "express";
 import { APIControllers } from "..";
 import { SchemaValidator } from "../middlewares";
+import { constants } from "../../util";
 
 const route = Router();
 
 export default app => {
-  // TODO: Add Routes in constants file
-  app.use("/auth", route);
+  const { SELF, SIGNUP, SIGNIN } = constants.ROUTES.AUTH;
 
-  route.post("/signup", SchemaValidator, APIControllers.AuthController.signup);
+  app.use(SELF, route);
 
-  route.post("/signin", APIControllers.AuthController.signin);
+  /**
+   * Route /signup
+   */
+  route.post(SIGNUP, SchemaValidator, APIControllers.AuthController.signup);
 
-  route.post("/logout", APIControllers.AuthController.logout);
+  /**
+   * Route /signin
+   */
+  route.post(SIGNIN, APIControllers.AuthController.signin);
 };
