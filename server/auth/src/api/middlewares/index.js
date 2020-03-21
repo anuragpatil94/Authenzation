@@ -40,6 +40,7 @@ export const SchemaValidator = async (req, res, next) => {
       next();
     }
   } catch (err) {
+    // TODO: Better Error Handling For example password=confirmPassword
     next(
       new ErrorHandler(
         422,

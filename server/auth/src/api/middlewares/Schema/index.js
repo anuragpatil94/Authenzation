@@ -23,5 +23,5 @@ const SignUpSchema = Joi.object({
 });
 
 export default {
-  [constants.ROUTES.AUTH.SIGNUP]: SignUpSchema
+  [constants.APIROUTES.AUTH.SIGNUP]: SignUpSchema
 };

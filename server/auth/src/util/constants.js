@@ -6,7 +6,7 @@ export const LOGTYPE = {
 };
 export const APPNAME = "AUTH_API";
 
-export const ROUTES = {
+export const APIROUTES = {
   AUTH: {
     SELF: "/auth",
     SIGNUP: "/signup",
