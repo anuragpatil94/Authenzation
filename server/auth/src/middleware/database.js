@@ -54,6 +54,9 @@ const usersSchema = {
         enum: ["admin", "general"],
         description: "This is based on level of access granted to the user"
       },
+      jwtRefreshToken:{
+        bsonType:"string"
+      },
       createdAt: {
         bsonType: "date"
       }

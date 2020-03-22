@@ -25,5 +25,10 @@ export default {
     mongoUser: process.env.MONGO_USERNAME,
     mongoPassword: process.env.MONGO_PASSWORD,
     mongoDbName: process.env.MONGO_DATABASE_NAME
+  },
+  jwt: {
+    accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
+    accessTokenExpiration: process.env.ACCESS_TOKEN_EXPIRATION,
+    refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET
   }
 };
