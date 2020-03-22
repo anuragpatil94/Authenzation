@@ -21,5 +21,9 @@ export default app => {
   /**
    * Route /signin
    */
-  route.post(SIGNIN, APIControllers.AuthController.signin);
+  route.post(
+    SIGNIN,
+    APIMiddlewares.SchemaValidator,
+    APIControllers.AuthController.signin
+  );
 };

@@ -1,6 +1,13 @@
 import Joi from "@hapi/joi";
 import { constants } from "../../../util";
 
+class Schema {
+  constructor(schema, keys) {
+    this.schema = schema;
+    this.keys = keys;
+  }
+}
+
 const SignUpSchema = Joi.object({
   firstName: Joi.string()
     .alphanum()
@@ -22,6 +29,32 @@ const SignUpSchema = Joi.object({
     .strict()
 });
 
+const SignInSchema = Joi.object({
+  authtype: Joi.string()
+    .alphanum()
+    .valid("JWT", "SESSION", "BASIC")
+    .required(),
+  username: Joi.string()
+    .alphanum()
+    .required(),
+  password: Joi.string()
+    .required()
+    .strict()
+});
+
 export default {
-  [constants.APIROUTES.AUTH.SIGNUP]: SignUpSchema
+  [constants.APIROUTES.AUTH.SIGNUP]: new Schema(SignUpSchema, {
+    body: [
+      "firstName",
+      "lastName",
+      "middleName",
+      "username",
+      "password",
+      "confirmPassword"
+    ]
+  }),
+  [constants.APIROUTES.AUTH.SIGNIN]: new Schema(SignInSchema, {
+    headers: ["authtype"],
+    body: ["username", "password"]
+  })
 };

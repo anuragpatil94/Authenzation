@@ -11,3 +11,14 @@ Content-Type: {{ContentType}}
     "firstName":"Test",
     "lastName":"One"
 }
+
+###
+
+POST {{Host}}/auth/signin
+Content-Type: {{ContentType}}
+authType: JWT
+
+{
+    "username":"test1",
+    "password":"test123"
+}

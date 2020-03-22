@@ -35,17 +35,26 @@ export const signup = async (req, res, next) => {
   }
 };
 export const signin = async (req, res, next) => {
-  const authType = req.headers.authType;
-  const reqUsername = req.body.data.username;
-  const reqPassword = req.body.data.password;
+  try {
+    // TODO: Use AuthType
+    const authType = req.body.authtype;
 
-  const userFromDatabase = await userServices.findUser(
-    reqUsername,
-    reqPassword
-  );
+    // Verify if user is in database and correct credentials
+    const user = await userServices.verifyUser(
+      req.body.username,
+      req.body.password
+    );
 
-  res.status(200).json({ message: "This is Signin Route" });
+    // Throw error if User is not received.
+    if (!user) {
+      throw new ErrorHandler(401, "User Credentials Invalid!");
+    }
+
+    res.status(200).json({ success: true, data: user });
+  } catch (err) {
+    next(err);
+  }
 };
-export const logout = (req, res, next) => {
+export const signout = (req, res, next) => {
   res.status(200).json({ message: "This is Logout Route" });
 };

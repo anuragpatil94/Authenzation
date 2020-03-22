@@ -21,16 +21,27 @@ export const SchemaValidator = async (req, res, next) => {
     const route = req.route.path;
 
     const method = req.method.toLowerCase();
+    Logger.debug(`Route ${route}`);
 
     if (_.includes(_supportedMethods, method) && _.has(Schema, route)) {
       // get schema for the current route
-      const _schema = _.get(Schema, route);
+      const SchemaClass = _.get(Schema, route);
+      const _schema = SchemaClass.schema;
+      const keys = SchemaClass.keys;
+
+      // Create a body object based on all the request inputs from body,headers,params
+      let body = {};
+      for (const key in keys) {
+        if (keys.hasOwnProperty(key)) {
+          const value = keys[key];
+          const formattedObject = _.pick(req[key], value);
+          body = { ...body, ...formattedObject };
+        }
+      }
 
       if (_schema) {
         // Validate req.body using the schema and validation options
-        const data = await _schema.validateAsync(req.body, _validationOptions);
-
-        console.log(data);
+        const data = await _schema.validateAsync(body, _validationOptions);
 
         // Replace req.body with the data after Joi validation
         req.body = data;
