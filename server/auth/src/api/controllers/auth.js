@@ -1,4 +1,4 @@
-import { userServices, authServices } from "../../services";
+import { userServices } from "../../services";
 import { Logger } from "../../middleware/logger";
 import { ErrorHandler } from "../../util";
 
@@ -8,14 +8,12 @@ export const signup = async (req, res, next) => {
     const requestData = req.body;
 
     // Check if user exist
-    const isUsernameAvailable = await authServices.isUsernameAvailable(
-      requestData.username
-    );
+    const user = await userServices.findUserByUsername(requestData.username);
 
     // Handle duplicate user exception
-    if (!isUsernameAvailable) {
+    if (user) {
       const message = "Username already exist!";
-      Logger.warn(message);
+      Logger.debug(message);
       throw new ErrorHandler(400, message);
     }
 
@@ -24,16 +22,17 @@ export const signup = async (req, res, next) => {
 
     // Check if UserId is Created.
     if (!createdUserId) {
-      throw new Error("User not created!");
+      const message = "User not created!";
+      Logger.debug(message);
+      throw new Error(message);
     }
 
-    res.status(200).json({
-      _id: createdUserId
-    });
+    res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }
 };
+
 export const signin = async (req, res, next) => {
   try {
     // TODO: Use AuthType
@@ -49,6 +48,11 @@ export const signin = async (req, res, next) => {
     if (!user) {
       throw new ErrorHandler(401, "User Credentials Invalid!");
     }
+
+    // TODO: TOKEN MAGIC
+    // TODO: Step1 - JWT
+    // TODO: Step2 - Session
+    // TODO: Step3 - Basic
 
     res.status(200).json({ success: true, data: user });
   } catch (err) {

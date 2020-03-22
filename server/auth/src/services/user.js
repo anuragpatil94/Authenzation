@@ -81,7 +81,7 @@ const createUserDocument = async ({ username, password, ...details }) => {
   // Encrypt Password
   const { salt, hashedPassword } = await encryptPassword(password);
 
-  // FIXME: Added new fields
+  // TODO: Added new fields
   // User Document
   const user = {
     username,
@@ -89,14 +89,14 @@ const createUserDocument = async ({ username, password, ...details }) => {
     details: {
       firstName: details.firstName,
       lastName: details.lastName,
-      middleName: details.middleName
+      ...(details.middleName && { middleName: details.middleName })
     },
     salt,
     userLevel: constants.USER.USERLEVEL.GENERAL,
     createdAt: new Date()
   };
+
   Logger.info("User document Created");
-  // Logger.info(JSON.stringify(user, undefined, 4));
   return user;
 };
 
