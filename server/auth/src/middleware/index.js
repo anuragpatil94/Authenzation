@@ -11,10 +11,7 @@ export default async ({ app }) => {
     }
     //   Load Model
 
-    // TODO: Add Logger
-    // Load all middlewares
-
-    // Load Express
+    // Load Middlewares
     loadExpress({ app });
     Logger.info("Loaded Express Initial Middlewares");
     loadLoggers({ app });

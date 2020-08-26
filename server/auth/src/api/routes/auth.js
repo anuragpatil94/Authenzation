@@ -1,14 +1,29 @@
 import { Router } from "express";
-import { AuthController } from "../../controllers";
+import { APIControllers, APIMiddlewares } from "..";
+import { constants } from "../../util";
 
 const route = Router();
 
 export default app => {
-  app.use("/auth", route);
+  const { SELF, SIGNUP, SIGNIN } = constants.APIROUTES.AUTH;
 
-  route.post("/signup", AuthController.signup);
+  app.use(SELF, route);
 
-  route.post("/signin", AuthController.signin);
+  /**
+   * Route /signup
+   */
+  route.post(
+    SIGNUP,
+    APIMiddlewares.SchemaValidator,
+    APIControllers.AuthController.signup
+  );
 
-  route.post("/logout", AuthController.logout);
+  /**
+   * Route /signin
+   */
+  route.post(
+    SIGNIN,
+    APIMiddlewares.SchemaValidator,
+    APIControllers.AuthController.signin
+  );
 };
